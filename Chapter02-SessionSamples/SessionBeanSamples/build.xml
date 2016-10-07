@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Chapter02" default="all" basedir=".">
+  <property file="../../Chapter01-GettingStarted/build.properties"/>
+  <property file="build.properties"/>
+ 
+  <path id="classpath">
+    <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+    <pathelement location="${output.dir}"/>
+  </path>
+ 
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+  </target>
+  
+  <target name="all" description="Build the project"
+          depends="init, clean, Compile-SessionSamples, Package-SessionBeans,Deploy-SessionBeans, Compile-ClientPrograms, Assemble-Client, Run-SearchFacadeTest, Run-ShoppingCartTest"/>
+ 
+  <target name="clean" description="Clean the project">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+       <fileset dir="${assemble.dir}" includes="**/*"/>
+    </delete>
+  </target>
+ 
+  <target name="Compile-SessionSamples"
+          description="Compile Session bean samples" depends="init, clean">
+    <echo message="Classpath  = ${glassfish_home}/lib/javaee.jar"> </echo>
+    <javac srcdir="./src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar" debug="${javac.debug}"
+           nowarn="${javac.nowarn}" deprecation="${javac.deprecation}"
+           encoding="Cp1252" source="1.5" target="1.5"
+           includes="com/apress/ejb3/chapter02/*.java"
+           excludes="com/apress/ejb3/chapter02/client/*.java"></javac>
+  </target>
+  
+  <target name="Package-SessionBeans" depends="Compile-SessionSamples">
+    <mkdir dir="${assemble.dir}"/>
+    <jar jarfile="${assemble.dir}/${sampleappname}.jar" update="true">
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/chapter02/*class*"/>
+      </fileset>
+    </jar>
+    <echo message="created ejb jar  file ${assemble.dir}/${sampleappname}.jar"
+          level="verbose"></echo>
+  </target>
+  
+  
+    <target name="Undeploy-SessionBeans"
+          depends="init"
+          unless="ee">
+    <echo message="Un-Deploying SessionSamples "
+          level="verbose"></echo>
+    <echo message="asadmin.bat undeploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} SessionSamples"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" undeploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="SessionSamples"/>
+    </exec>
+  </target>
+  
+  <target name="Deploy-SessionBeans"
+          depends="init,Compile-SessionSamples,Package-SessionBeans,Undeploy-SessionBeans"
+          unless="ee">
+    <echo message="Deploying ${assemble.dir}/${sampleappname}.jar from ${assemble.dir}."
+          level="verbose"></echo>
+    <echo message="asadmin.bat deploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} --upload=true --target ${appserver.instance} ${assemble.dir}/${sampleappname}.jar"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" deploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--upload=true"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${assemble.dir}/${sampleappname}.jar"/>
+    </exec>
+  </target>
+
+  <target name="Compile-ClientPrograms" depends="init,Compile-SessionSamples">
+    <javac srcdir="src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar;${output.dir}"
+           includes="com/apress/ejb3/chapter02/**"/>
+  </target>
+ 
+  <target name="Assemble-Client" depends="init,  Deploy-SessionBeans, Compile-ClientPrograms">
+    <mkdir dir="${assemble.dir}"/>
+    <jar jarfile="${assemble.dir}/searchfacadeclient.jar" update="true">
+      <manifest>
+        <attribute name="Main-Class"
+                   value="com.apress.ejb3.chapter02.client.SearchFacadeTest"/>
+      </manifest>
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/chapter02/SearchFacade.class"/>
+        <include name="com/apress/ejb3/chapter02/client/SearchFacadeTest.class"/>
+      </fileset>
+    </jar>
+    <jar jarfile="${assemble.dir}/shoppingcartclient.jar" update="true">
+      <manifest>
+        <attribute name="Main-Class"
+                   value="com.apress.ejb3.chapter02.client.ShoppingCartTest"/>
+      </manifest>
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/chapter02/ShoppingCart.class"/>
+        <include name="com/apress/ejb3/chapter02/client/ShoppingCartTest.class"/>
+      </fileset>
+    </jar>
+    <echo message="created client jar  files ${assemble.dir}/searchfacadeclient.jar and ${assemble.dir}/shoppingcartclient.jar"
+          level="verbose"></echo>
+  </target>
+
+  <target name="Run-SearchFacadeTest"
+          depends="init,Assemble-Client">
+    <echo message="Executing client class using ${glassfish_home}/bin/${APPCLIENT} "></echo>
+    <exec executable="${glassfish_home}/bin/${APPCLIENT}">
+      <arg line="-client ${assemble.dir}/searchfacadeclient.jar"/>
+    </exec>
+  </target>
+ 
+  <target name="Run-ShoppingCartTest"
+          depends="init,Assemble-Client">
+    <echo message="Executing client class using ${glassfish_home}/bin/${APPCLIENT} "></echo>
+    <exec executable="${glassfish_home}/bin/${APPCLIENT}">
+      <arg line="-client ${assemble.dir}/shoppingcartclient.jar"/>
+    </exec>
+  </target>
+</project>
+

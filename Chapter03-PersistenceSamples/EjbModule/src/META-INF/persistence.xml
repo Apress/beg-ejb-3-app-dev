@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             version="1.0">
+  <persistence-unit name="Chapter03-Unit">
+    <provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider>
+    <jta-data-source>jdbc/wineappDS</jta-data-source>
+    <class>com.apress.ejb3.ch03.Address</class>
+    <class>com.apress.ejb3.ch03.Customer</class>
+    <class>com.apress.ejb3.ch03.CustomerOrder</class>
+  </persistence-unit>
+</persistence>

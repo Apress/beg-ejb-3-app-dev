@@ -1,0 +1,38 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<GenerateDescriptor class="oracle.jdeveloper.offlinedb.model.GenerateDescriptor">
+   <SQLFileURL path="EjbModule.sql"/>
+   <cascadeDelete>true</cascadeDelete>
+   <connectionName>wineapp</connectionName>
+   <generateSQLPlus>false</generateSQLPlus>
+   <generateSchemaNames>false</generateSchemaNames>
+   <generateScripts>true</generateScripts>
+   <generateSpoolCommands>false</generateSpoolCommands>
+   <generateToDatabase>true</generateToDatabase>
+   <manualReconcile>false</manualReconcile>
+   <objectIDs>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>c9c1a8d2-010d-1000-8002-822364c44fde</ID>
+         <parent/>
+         <type>TABLE</type>
+      </Item>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>c9c1a8d2-010d-1000-800b-822364c44fde</ID>
+         <parent/>
+         <type>TABLE</type>
+      </Item>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>c9c1a8d2-010d-1000-8014-822364c44fde</ID>
+         <parent/>
+         <type>TABLE</type>
+      </Item>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>c9c1a8d2-010d-1000-8021-822364c44fde</ID>
+         <parent/>
+         <type>SEQUENCE</type>
+      </Item>
+   </objectIDs>
+   <properties/>
+   <reconcile>false</reconcile>
+   <replace>true</replace>
+   <schemaName>WINEAPP</schemaName>
+</GenerateDescriptor>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Chapter12" default="all" basedir=".">
+  <property file="build.properties"/>
+
+  <path id="classpath">
+  <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+	<pathelement location="${glassfish_home}/lib/toplink-essentials.jar"/>
+    <pathelement location="${output.dir}"/>
+  </path>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+    <delete file="${assemble.dir}/winestore.ear"/>
+  </target>
+  
+  <target name="all" description="Build the project" 
+  depends="init,DeployWineStoreApplication"/>
+  
+  <target name="clean" description="Clean the project">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  
+ 
+  <target name="CreateJSFWAR" depends="init" description="Prepare JSF WAR file">
+     <mkdir dir="${output.dir}/jsf/WEB-INF/classes"/>
+    <javac srcdir="WineStoreJSFClient/src" destdir="${output.dir}/jsf/WEB-INF/classes">
+        <classpath>
+            <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+            <pathelement location="${glassfish_home}/lib/toplink-essentials.jar"/>
+            <pathelement location="${glassfish_home}/lib/jsf-impl.jar"/>
+             <pathelement location="${assemble.dir}/lib/PUNIT.jar"/>
+            <pathelement location="${assemble.dir}/winestoreEJB.jar"/>
+        </classpath>
+    </javac>
+    <copy file="WineStoreJSFClient/public_html/WEB-INF/web.xml" todir="${output.dir}/jsf/WEB-INF"/>
+    <copy file="WineStoreJSFClient/public_html/WEB-INF/faces-config.xml" todir="${output.dir}/jsf/WEB-INF"/>
+    <copy todir="${output.dir}/jsf">
+       <fileset dir="WineStoreJSFClient/public_html">
+            <include name="**/*.jsp"/>
+        </fileset>
+    </copy>
+    <jar destfile="${assemble.dir}/winestoreWeb.war" basedir="${output.dir}/jsf"/>
+    </target>
+    
+    <target name="AssembleWineStoreApplication" depends="init, CreateJSFWAR" description="Assemble EAR">
+        <mkdir dir="${assemble.dir}/META-INF"/>
+        <copy file="WineStoreAppAssembly/src/META-INF/application.xml" todir="${assemble.dir}/META-INF"/>
+        <jar destfile="${assemble.dir}/winestore.ear" 
+          basedir="${assemble.dir}"
+          excludes="${assemble.dir}/creditservice.jar" />
+    </target>
+    
+     <target name="Undeploy-WineStoreApplication" depends="init" unless="ee">
+    <echo message="Un-Deploying WineStoreApplication " level="verbose"></echo>
+    <echo message="asadmin.bat undeploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} winestore"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" undeploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${sampleappname}"/>
+    </exec>
+  </target>
+    
+    <target name="DeployWineStoreApplication" depends="init,AssembleWineStoreApplication,Undeploy-WineStoreApplication" unless="ee">
+    <echo message="Deploying ${assemble.dir}/${sampleappname}.ear from ${assemble.dir}."
+          level="verbose"></echo>
+    <echo message="asadmin.bat deploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} --upload=true --target ${appserver.instance} ${assemble.dir}/${sampleappname}.ear"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" deploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--upload=true"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${assemble.dir}/${sampleappname}.ear"/>
+    </exec>
+  </target>
+  
+ 
+
+</project>
+

@@ -1,0 +1,84 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SEQUENCE class="oracle.javatools.db.Sequence" xmlns="http://xmlns.oracle.com/jdeveloper/10130/offlinedb">
+   <ID class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+      <ID>c9c1a8d2-010d-1000-8021-822364c44fde</ID>
+      <parent/>
+      <type>SEQUENCE</type>
+   </ID>
+   <cacheSize>50</cacheSize>
+   <cycleFlag>false</cycleFlag>
+   <incrementBy>1</incrementBy>
+   <maxValue/>
+   <minValue>1</minValue>
+   <name>CH03_EJB_SEQ_ID_GEN</name>
+   <orderFlag>false</orderFlag>
+   <properties class="java.util.HashMap">
+      <Item>
+         <Key>OfflineDBConstants.GENERATE_TARGET_CONECTION</Key>
+         <Value>wineapp</Value>
+      </Item>
+      <Item>
+         <Key>OfflineDBConstants.GENERATE_TARGET_ID</Key>
+         <Value class="oracle.jdeveloper.offlinedb.marshal.OracleDBReferenceID">
+            <ID/>
+            <connectionName>wineapp</connectionName>
+            <databaseID>16512</databaseID>
+            <name>CH03_EJB_SEQ_ID_GEN</name>
+            <parent/>
+            <schemaName>WINEAPP</schemaName>
+            <type>SEQUENCE</type>
+         </Value>
+      </Item>
+      <Item>
+         <Key>OfflineDBConstants.GENERATE_TARGET_NAME</Key>
+         <Value>CH03_EJB_SEQ_ID_GEN</Value>
+      </Item>
+      <Item>
+         <Key>OfflineDBConstants.GENERATE_TARGET_SCHEMA</Key>
+         <Value>WINEAPP</Value>
+      </Item>
+      <Item>
+         <Key>OfflineDBConstants.IMPORT_SOURCE_CONNECTION</Key>
+         <Value>wineapp</Value>
+      </Item>
+      <Item>
+         <Key>OfflineDBConstants.IMPORT_SOURCE_ID</Key>
+         <Value class="oracle.jdeveloper.offlinedb.marshal.OracleDBReferenceID">
+            <ID/>
+            <connectionName>wineapp</connectionName>
+            <databaseID>15255</databaseID>
+            <name>EJB_SEQ_ID_GEN</name>
+            <parent/>
+            <schemaName>WINEAPP</schemaName>
+            <type>SEQUENCE</type>
+         </Value>
+      </Item>
+      <Item>
+         <Key>OfflineDBConstants.IMPORT_SOURCE_NAME</Key>
+         <Value>EJB_SEQ_ID_GEN</Value>
+      </Item>
+      <Item>
+         <Key>OfflineDBConstants.IMPORT_SOURCE_SCHEMA</Key>
+         <Value>WINEAPP</Value>
+      </Item>
+   </properties>
+   <schema>
+      <ID class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>c9c1a8c2-010d-1000-8001-822364c44fde</ID>
+         <parent/>
+         <type>SCHEMA</type>
+      </ID>
+      <name>MYSCHEMA</name>
+      <properties class="java.util.HashMap">
+         <Item>
+            <Key>OfflineDBConstants.GENERATE_TARGET_CONECTION</Key>
+            <Value>wineapp</Value>
+         </Item>
+         <Item>
+            <Key>OfflineDBConstants.GENERATE_TARGET_SCHEMA</Key>
+            <Value>WINEAPP</Value>
+         </Item>
+      </properties>
+   </schema>
+   <startWith>100</startWith>
+</SEQUENCE>

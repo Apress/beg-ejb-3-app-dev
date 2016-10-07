@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<?Oracle-JDeveloper Artifact = '1.1'?>
+<artifact xmlns="http://xmlns.oracle.com/jdeveloper/modeler/artifact" name="diagrams" type="UMLPackage" cid="3de665a5-010a-1000-8004-822367879712::persistenceunit.diagrams::UMLPackage">
+   <property xmlns="">
+      <cid name="NAMESPACE_REFERENCE" key="3de6659b-010a-1000-8003-822367879712::persistenceunit::UMLPackage"/>
+      <null name="COMMENT"/>
+      <null name="IMAGE"/>
+   </property>
+   <backreference xmlns=""/>
+   <children xmlns=""/>
+</artifact>

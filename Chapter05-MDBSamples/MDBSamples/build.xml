@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Chapter02" default="all" basedir=".">
+  <property file="../../Chapter01-GettingStarted/build.properties"/>
+  <property file="build.properties"/>
+  <path id="classpath">
+    <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+    <pathelement location="${output.dir}"/>
+  </path>
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+  </target>
+  <target name="all" description="Build the project"
+          depends="clean, Compile-MDBSamples,Package-MDB, CreateJMSResources,CreateJavaMailResources,Deploy-MDB,Run-Client"/>
+  <target name="clean" description="Clean the project">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${assemble.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <target name="Compile-MDBSamples" description="Compile MDB samples"
+          depends="init">
+    <echo message="Classpath  = ${glassfish_home}/lib/javaee.jar"> </echo>
+    <javac srcdir="./src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar" debug="${javac.debug}"
+           nowarn="${javac.nowarn}" deprecation="${javac.deprecation}"
+           encoding="Cp1252" source="1.5" target="1.5"
+           includes="com/apress/ejb3/chapter05/*.java"
+           excludes="com/apress/ejb3/chapter05/client/*.java"></javac>
+  </target>
+  <target name="Package-MDB" depends="init,Compile-MDBSamples">
+    <mkdir dir="${assemble.dir}"/>
+    <jar jarfile="${assemble.dir}/${sampleappname}.jar" update="true">
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/chapter05/*class*"/>
+      </fileset>
+    </jar>
+    <echo message="created ejb jar  file ${assemble.dir}/${sampleappname}.jar"
+          level="verbose"></echo>
+  </target>
+  <target name="Drop-JMSResources" depends="init" unless="ee">
+    <echo message="Drop - JMSResources " level="verbose"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jms-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="StatusMessageTopicConnectionFactory"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jms-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="StatusMessageTopic"/>
+    </exec>
+  </target>
+  <target name="CreateJMSResources" depends="Drop-JMSResources">
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jms-resource --restype javax.jms.TopicConnectionFactory StatusMessageTopicConnectionFactory"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jms-resource --restype javax.jms.Topic --property imqDestinationName=StatusMessageTopic StatusMessageTopic"/>
+    </exec>
+  </target>
+  <target name="Drop-JavaMailResources" depends="init" unless="ee">
+    <echo message="Drop - JavaMailResources " level="verbose"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-javamail-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="mail/wineappMail"/>
+    </exec>
+  </target>
+  <target name="CreateJavaMailResources" depends="Drop-JavaMailResources">
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-javamail-resource --mailhost localhost --mailuser wineapp@localhost --fromaddress wineapp@localhost mail/wineappMail"/>
+    </exec>
+  </target>
+  <target name="Undeploy-MDB" depends="init" unless="ee">
+    <echo message="Un-Deploying MDB " level="verbose"></echo>
+    <echo message="asadmin.bat undeploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} MDBSamples"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" undeploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="MDBSamples"/>
+    </exec>
+  </target>
+  <target name="Deploy-MDB"
+          depends="init,Undeploy-MDB, Compile-MDBSamples,Package-MDB"
+          unless="ee">
+    <echo message="Deploying ${assemble.dir}/${sampleappname}.jar from ${assemble.dir}."
+          level="verbose"></echo>
+    <echo message="asadmin.bat deploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} --upload=true --target ${appserver.instance} ${assemble.dir}/${sampleappname}.jar"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" deploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--upload=true"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${assemble.dir}/${sampleappname}.jar"/>
+    </exec>
+  </target>
+  <target name="Compile-ClientPrograms" depends="init,Compile-MDBSamples">
+    <javac srcdir="src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar;${output.dir}"
+           includes="com/apress/ejb3/chapter05/client/**"/>
+  </target>
+  <target name="Run-Client" depends="init,Compile-ClientPrograms">
+    <echo message="Executing client class using ${glassfish_home}/bin/${APPCLIENT} "></echo>
+    <exec executable="${glassfish_home}/bin/${APPCLIENT}" dir="${output.dir}">
+      <arg value="com.apress.ejb3.chapter05.client.StatusMessageClient"/>
+    </exec>
+  </target>
+</project>
+
+

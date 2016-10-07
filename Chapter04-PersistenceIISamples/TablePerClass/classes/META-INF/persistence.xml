@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             version="1.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="TablePerClass-JSE">
+    <class>com.apress.ejb3.ch04.tableperclass.Person</class>
+    <class>com.apress.ejb3.ch04.tableperclass.Employee</class>
+    <class>com.apress.ejb3.ch04.tableperclass.Address</class>
+    <class>com.apress.ejb3.ch04.tableperclass.FullTimeEmployee</class>
+    <class>com.apress.ejb3.ch04.tableperclass.PartTimeEmployee</class>
+    <properties>
+      <property name="toplink.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+      <property name="toplink.jdbc.url"
+                value="jdbc:oracle:thin:@localhost:1521:XE"/>
+      <property name="toplink.jdbc.user" value="wineapp"/>
+      <property name="toplink.jdbc.password" value="wineapp"/>
+      <property name="toplink.platform.class.name"
+                value="oracle.toplink.essentials.platform.database.oracle.OraclePlatform"/>
+      <property name="toplink.logging.level" value="FINER"/>
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,211 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<jpr:project xmlns:jpr="http://xmlns.oracle.com/ide/project">
+   <hash n="component-versions">
+      <value n="oracle.adf.dt.migration.ProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.adfdt.controller.jsf.addin.JSFProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.adfdt.controller.struts.addin.db.ADFStrutsProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.adfdt.controller.struts.addin.StrutsProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.bm.commonIde.ProjectUpgrader" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.ide.model.Project" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.ide.model.ResourcePathsMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.jbo.dt.jclient.migrator.JCProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.jbo.dt.jdevx.ui.appnav.APProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.jdeveloper.dbmodeler.migration.ProjectMigratorHelper" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.jdeveloper.ejb.EjbMigrator" v="10.1.3.1.0"/>
+      <value n="oracle.jdeveloper.offlinedb.migration.OfflineDBProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.jdevimpl.jsp.JspMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.jdevimpl.runner.RunConfigurationsMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.jdevimpl.webservices.WebServicesMigratorHelper" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.tip.tools.ide.pm.addin.PMProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+      <value n="oracle.toplink.addin.migration.TopLinkProjectMigrator" v="10.1.3.0.4;10.1.3.1.0"/>
+   </hash>
+   <list n="contentSets">
+      <string v="oracle.jdeveloper.model.PathsConfiguration/javaContentSet"/>
+      <string v="oracle.ide.model.ResourcePaths/resourcesContentSet"/>
+      <string v="oracle.jdeveloper.offlinedb.model.OfflineDBProjectSettings/offlineDBContentSet"/>
+      <string v="oracle.jdeveloper.model.J2eeSettings/webContentSet"/>
+      <string v="oracle.toplink.addin.TopLinkProjectSettings/toplinkContentSet"/>
+      <string v="oracle.bm.commonIde.data.project.ModelerProjectSettings/modelersContentSet"/>
+      <string v="oracle.tip.tools.ide.pm.addin.PMProjectSettings/Integration_Content"/>
+   </list>
+   <value n="defaultPackage" v="persistenceunit"/>
+   <hash n="ejbModuleContainer">
+      <list n="annotatedEjbBeanClassUrls">
+         <url path="src/com/apress/ejb3/wineapp/Address.java"/>
+         <url path="src/com/apress/ejb3/wineapp/BusinessContact.java"/>
+         <url path="src/com/apress/ejb3/wineapp/CartItem.java"/>
+         <url path="src/com/apress/ejb3/wineapp/Customer.java"/>
+         <url path="src/com/apress/ejb3/wineapp/CustomerOrder.java"/>
+         <url path="src/com/apress/ejb3/wineapp/Distributor.java"/>
+         <url path="src/com/apress/ejb3/wineapp/Individual.java"/>
+         <url path="src/com/apress/ejb3/wineapp/InventoryItem.java"/>
+         <url path="src/com/apress/ejb3/wineapp/OrderItem.java"/>
+         <url path="src/com/apress/ejb3/wineapp/Supplier.java"/>
+         <url path="src/com/apress/ejb3/wineapp/Wine.java"/>
+         <url path="src/com/apress/ejb3/wineapp/WineItem.java"/>
+      </list>
+      <value n="dbConnection" v="wineapp"/>
+      <hash n="ejbIdToEjbNameMap">
+         <value n="b353c74a-0109-1000-8001-c0a800031ed4" v="com.apress.ejb3.wineapp.Customer"/>
+         <value n="d84b3807-0109-1000-8002-c0a800022d63" v="com.apress.ejb3.wineapp.Address"/>
+         <value n="d84b3807-0109-1000-8003-c0a800022d63" v="com.apress.ejb3.wineapp.BusinessContact"/>
+         <value n="d84b3807-0109-1000-8004-c0a800022d63" v="com.apress.ejb3.wineapp.CartItem"/>
+         <value n="d84b3811-0109-1000-8005-c0a800022d63" v="com.apress.ejb3.wineapp.CustomerOrder"/>
+         <value n="d84b3811-0109-1000-8006-c0a800022d63" v="com.apress.ejb3.wineapp.Distributor"/>
+         <value n="d84b3811-0109-1000-8007-c0a800022d63" v="com.apress.ejb3.wineapp.Individual"/>
+         <value n="d84b3811-0109-1000-8008-c0a800022d63" v="com.apress.ejb3.wineapp.InventoryItem"/>
+         <value n="d84b3811-0109-1000-8009-c0a800022d63" v="com.apress.ejb3.wineapp.OrderItem"/>
+         <value n="d84b3811-0109-1000-800a-c0a800022d63" v="com.apress.ejb3.wineapp.Supplier"/>
+         <value n="d84b381b-0109-1000-800b-c0a800022d63" v="com.apress.ejb3.wineapp.Wine"/>
+         <value n="d84b381b-0109-1000-800c-c0a800022d63" v="com.apress.ejb3.wineapp.WineItem"/>
+      </hash>
+      <value n="ejbVersion" v="3.0"/>
+   </hash>
+   <hash n="oracle.bm.commonIde.data.project.ModelerProjectSettings">
+      <hash n="modelersContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="model/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.ide.model.ResourcePaths">
+      <hash n="resourcesContentSet">
+         <list n="constituent-sets">
+            <hash>
+               <list n="pattern-filters">
+                  <string v="+*"/>
+               </list>
+               <list n="url-path">
+                  <url path="."/>
+               </list>
+            </hash>
+            <hash>
+               <list n="pattern-filters">
+                  <string v="+**"/>
+               </list>
+               <list n="url-path">
+                  <url path="sqlscripts/"/>
+               </list>
+            </hash>
+         </list>
+         <list n="url-path"/>
+      </hash>
+   </hash>
+   <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
+      <value n="internalEncoding" v="Cp1252"/>
+   </hash>
+   <hash n="oracle.jdeveloper.model.J2eeSettings">
+      <value n="j2eeWebAppName" v="Samples-PersistenceUnit-ST-webapp"/>
+      <value n="j2eeWebContextRoot" v="Samples-PersistenceUnit-ST-context-root"/>
+      <hash n="webContentSet">
+         <list n="url-path">
+            <url path="public_html/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.jdeveloper.model.PathsConfiguration">
+      <hash n="javaContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="src/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.jdeveloper.offlinedb.model.OfflineDBProjectSettings">
+      <hash n="offlineDBContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="database/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.jdeveloper.runner.RunConfigurations">
+      <hash n="runConfigurationDefinitions">
+         <hash n="Default">
+            <value n="custom" v="false"/>
+            <value n="name" v="Default"/>
+         </hash>
+      </hash>
+      <list n="runConfigurationList">
+         <string v="Default"/>
+      </list>
+   </hash>
+   <hash n="oracle.jdevimpl.config.JProjectLibraries">
+      <list n="exportedReferences">
+         <hash>
+            <value n="id" v="Javaee.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Toplink-essentials.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+      </list>
+      <hash n="internalDefinitions">
+         <list n="libraryDefinitions">
+            <hash>
+               <list n="classPath">
+                  <url path="../../../../../../../../Glassfish/B41/glassfish/lib/javaee.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Javaee.jar"/>
+               <value n="id" v="Javaee.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="../../../../../../../../Glassfish/B41/glassfish/lib/toplink-essentials.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Toplink-essentials.jar"/>
+               <value n="id" v="Toplink-essentials.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+         </list>
+      </hash>
+      <list n="libraryReferences">
+         <hash>
+            <value n="id" v="Javaee.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Toplink-essentials.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+      </list>
+   </hash>
+   <hash n="oracle.jdevimpl.config.JProjectPaths">
+      <url n="outputDirectory" path="classes/"/>
+   </hash>
+   <hash n="oracle.tip.tools.ide.pm.addin.PMProjectSettings">
+      <hash n="Integration_Content">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.tip.tools.ide.pm.PMProjectSettings">
+      <hash n="Integration_Content">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.toplink.addin.TopLinkProjectSettings">
+      <hash n="toplinkContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="toplink/"/>
+         </list>
+      </hash>
+   </hash>
+</jpr:project>

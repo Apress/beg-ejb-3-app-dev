@@ -1,0 +1,56 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ejb-deployment nselem="ejb-deployment" class="oracle.jdeveloper.deploy.ejb.EjbProfile" xmlns="http://xmlns.oracle.com/jdeveloper/101303/deploy/j2ee-ejb-jar">
+   <archiveOptions>
+      <additionalManifests>
+         <Item path="src/Blah.file"/>
+      </additionalManifests>
+      <compressed>false</compressed>
+      <hasManifest>true</hasManifest>
+      <mainClass/>
+   </archiveOptions>
+   <defaultConnection>TLEssentials</defaultConnection>
+   <deployClientMaxHeapSize/>
+   <earURL path="deploy/TestApp.ear"/>
+   <enterpriseAppName>TestApp</enterpriseAppName>
+   <fileGroups>
+      <groups>
+         <Item class="oracle.jdeveloper.deploy.common.PackagingFileGroup" internalName="project-output">
+            <contributors>
+               <Item type="2"/>
+               <Item type="7"/>
+               <Item type="6"/>
+            </contributors>
+            <displayName>Project Output</displayName>
+            <filters>
+               <rules>
+                  <Item type="1" pattern="wsbuild.properties"/>
+                  <Item type="1" pattern="client/"/>
+                  <Item type="1" pattern="Blah.file"/>
+                  <Item type="0" pattern="com/apress/ejb3/wineapp/"/>
+                  <Item type="0" pattern="META-INF/persistence.xml"/>
+                  <Item type="1" pattern="META-INF/"/>
+                  <Item type="0" pattern="com/apress/ejb3/test/"/>
+                  <Item type="1" pattern="com/apress/"/>
+                  <Item type="1" pattern="winestoreapp/"/>
+                  <Item type="1" pattern="**/CVS/"/>
+                  <Item type="1" pattern="**.cdi"/>
+                  <Item type="1" pattern="**.contrib"/>
+                  <Item type="1" pattern="**.keep"/>
+                  <Item type="1" pattern="**.rvi"/>
+                  <Item type="1" pattern=".jsps/"/>
+                  <Item type="1" pattern=".tags/"/>
+                  <Item type="1" pattern=".dtags/"/>
+                  <Item type="1" pattern="**/*.jht"/>
+                  <Item type="1" pattern="**/*.jjt"/>
+                  <Item type="1" pattern="**/*.jxt"/>
+                  <Item type="0" pattern="**"/>
+               </rules>
+            </filters>
+            <targetWithinJar/>
+         </Item>
+      </groups>
+   </fileGroups>
+   <jarURL path="deploy/TestApp.jar"/>
+   <profileDeps/>
+   <properties/>
+</ejb-deployment>

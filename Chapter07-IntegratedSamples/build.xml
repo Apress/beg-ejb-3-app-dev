@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Chapter07" default="all" basedir=".">
+  <property file="../Chapter01-GettingStarted/build.properties"/>
+  <property file="build.properties"/>
+  <import file="../Chapter01-GettingStarted/build.xml"/>
+  <path id="classpath">
+    <dirset dir="${output.dir}/clientproxies"/>
+    <pathelement location="${output.dir}/clientproxies"/>
+    <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+    <pathelement location="${glassfish_home}/lib/toplink-essentials.jar"/>
+    <pathelement location="${output.dir}"/>
+  </path>
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${assemble.dir}"/>
+
+     <mkdir dir="${assemble.dir}/lib"/>
+     <mkdir dir="${assemble.dir}/META-INF"/>
+    <mkdir dir="${assemble.dir}/lib"/>
+    <mkdir dir="${assemble.dir}/META-INF"/>
+    <delete file="${assemble.dir}/winestore.ear"/>
+
+  </target>
+  <target name="all" description="Build the project"
+          depends="Package-PersistenceUnit,Package-BusinessServices,Assemble-WineStoreApp,CreateJDBCResources,CreateJMSResources,CreateJavaMailResources,Deploy-WineStoreApplication,DropAndCreateTables,Run-Client"/>
+  <target name="clean" description="Clean the project">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <target name="Undeploy-CreditService" depends="init" unless="ee">
+    <echo message="Un-Deploying Credit Service " level="verbose"></echo>
+    <echo message="asadmin.bat undeploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} CreditService"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" undeploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="creditservice"/>
+    </exec>
+  </target>
+  <target name="Deploy-CreditService" depends="init,Undeploy-CreditService"
+          unless="ee">
+    <echo message="Deploying ${assemble.dir}/${creditserviceappname}.jar from ${assemble.dir}."
+          level="verbose"></echo>
+    <echo message="asadmin.bat deploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} --upload=true --target ${appserver.instance} ${assemble.dir}/${creditserviceappname}.jar"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" deploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--upload=true"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${assemble.dir}/${creditserviceappname}.jar"/>
+    </exec>
+  </target>
+  <target name="Compile-PersistenceUnit" description="Compile Java source files"
+          depends="init">
+    <echo message="Classpath  = ${glassfish_home}/lib/javaee.jar;${glassfish_home}/lib/toplink-essentials.jar"> </echo>
+    <mkdir dir="${output.dir}/META-INF"/>
+    <javac srcdir="./PersistenceUnit/src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar;${glassfish_home}/lib/toplink-essentials.jar"
+           debug="${javac.debug}" nowarn="${javac.nowarn}"
+           deprecation="${javac.deprecation}" encoding="Cp1252" source="1.5"
+           target="1.5" includes="com/apress/ejb3/wineapp/**"></javac>
+    <copy file="./PersistenceUnit/src/META-INF/persistence.xml"
+          todir="${output.dir}/META-INF"/>
+  </target>
+  <target name="Package-PersistenceUnit" depends="init,Compile-PersistenceUnit">
+    <jar jarfile="${assemble.dir}/${puname}.jar" update="true">
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/wineapp/*class*"/>
+        <include name="META-INF/persistence.xml"/>
+      </fileset>
+    </jar>
+    <move file="${assemble.dir}/punit.jar" todir="${assemble.dir}/lib"/>
+    <echo message="created Persistence Unit jar file ${assemble.dir}/${puname}.jar"
+          level="verbose"></echo>
+  </target>
+  <target name="Compile-BusinessServices"
+          description="Compile Java source files" depends="init">
+    <echo message="Classpath  = ${glassfish_home}/lib/javaee.jar;${glassfish_home}/lib/toplink-essentials.jar;${assemble.dir}/creditserviceclient.jar;${assemble.dir}/lib/punit.jar"> </echo>
+    <javac srcdir="./WineStoreModel/src" destdir="${output.dir}"
+           classpath="${assemble.dir}/creditserviceclient.jar;${glassfish_home}/lib/javaee.jar;${glassfish_home}/lib/toplink-essentials.jar;${assemble.dir}/lib/punit.jar"
+           debug="${javac.debug}" nowarn="${javac.nowarn}"
+           deprecation="${javac.deprecation}" encoding="Cp1252" source="1.5"
+           target="1.5" includes="com/apress/ejb3/chapter07/**"></javac>
+  </target>
+  <target name="Package-BusinessServices"
+          depends="init,Compile-BusinessServices">
+    <jar destfile="${assemble.dir}/${bservices}.jar" update="true">
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/chapter07/business/*class*"/>
+        <include name="com/apress/ejb3/chapter07/business/mdb/*class*"/>
+        <include name="com/apress/ejb3/chapter07/*class*"/>
+      </fileset>
+    </jar>
+    <echo message="created ejb jar  file ${assemble.dir}/${bservices}.jar"
+          level="verbose"></echo>
+  </target>
+  <target name="Assemble-WineStoreApp"
+          depends="init,         Package-PersistenceUnit, Package-BusinessServices"
+          description="Assemble EAR">
+    <copy file="WineStoreAppAssembly/src/META-INF/application.xml"
+          todir="${assemble.dir}/META-INF"/>
+    <jar destfile="${assemble.dir}/winestore.ear" basedir="${assemble.dir}"
+         excludes="**/creditservice.jar">
+      <fileset dir="${assemble.dir}">
+        <include name="${assemble.dir}/winestoreEJB.jar"/>
+        <include name="${assemble.dir}/META-INF/application.xml"/>
+      </fileset>
+      <fileset dir="${assemble.dir}/lib">
+        <include name="${assemble.dir}/lib/punit.jar"/>
+        <include name="${assemble.dir}/lib/creditserviceclient.jar"/>
+      </fileset>
+    </jar>
+  </target>
+  <target name="Drop-JMSResources" depends="init" unless="ee">
+    <echo message="Drop - JMSResources " level="verbose"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jms-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="StatusMessageTopicConnectionFactory"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jms-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="StatusMessageTopic"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jms-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="poTopicConnectionFactory"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jms-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="PurchaseOrderTopic"/>
+    </exec>
+  </target>
+  <target name="CreateJMSResources" depends="Drop-JMSResources">
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jms-resource --restype javax.jms.TopicConnectionFactory StatusMessageTopicConnectionFactory"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jms-resource --restype javax.jms.Topic --property imqDestinationName=StatusMessageTopic StatusMessageTopic"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jms-resource --restype javax.jms.TopicConnectionFactory poTopicConnectionFactory"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jms-resource --restype javax.jms.Topic --property imqDestinationName=PurchaseOrderTopic PurchaseOrderTopic"/>
+    </exec>
+  </target>
+  <target name="Drop-JavaMailResources" depends="init" unless="ee">
+    <echo message="Drop - JavaMailResources " level="verbose"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-javamail-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="mail/wineappMail"/>
+    </exec>
+  </target>
+  <target name="CreateJavaMailResources" depends="Drop-JavaMailResources">
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-javamail-resource --mailhost ${admin.host} --mailuser wineapp@${admin.host} --fromaddress wineapp@${admin.host} mail/wineappMail"/>
+    </exec>
+  </target>
+  <target name="Undeploy-WineStoreApplication" depends="init" unless="ee">
+    <echo message="Un-Deploying WineStoreApplication " level="verbose"></echo>
+    <echo message="asadmin.bat undeploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} winestore"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" undeploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${sampleappname}"/>
+    </exec>
+  </target>
+  <target name="Deploy-WineStoreApplication"
+          depends="init,Undeploy-WineStoreApplication" unless="ee">
+    <echo message="Deploying ${assemble.dir}/${sampleappname}.ear from ${assemble.dir}."
+          level="verbose"></echo>
+    <echo message="asadmin.bat deploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} --upload=true --target ${appserver.instance} ${assemble.dir}/${sampleappname}.ear"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" deploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--upload=true"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${assemble.dir}/${sampleappname}.ear"/>
+    </exec>
+  </target>
+  <target name="Compile-Client"
+          depends="init,Package-PersistenceUnit,Package-BusinessServices">
+    <javac srcdir="./GlassFishUnitTests/src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar;${assemble.dir}/winestoreEJB.jar;${assemble.dir}/lib/punit.jar"
+           includes="com/apress/ejb3/chapter07/client/**"/>
+  </target>
+  <target name="Assemble-Client" depends="init,Compile-Client">
+    <mkdir dir="${assemble.dir}"/>
+    <jar destfile="${assemble.dir}/winestoreclient.jar" update="true">
+      <manifest>
+        <attribute name="Main-Class"
+                   value="com.apress.ejb3.chapter07.client.ShoppingCartTest"/>
+      </manifest>
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/chapter07/business/*class*"/>
+        <include name="com/apress/ejb3/chapter07/business/mdb/*class*"/>
+        <include name="com/apress/ejb3/chapter07/*class*"/>
+        <include name="com/apress/ejb3/chapter07/client/*class*"/>
+        <include name="com/apress/ejb3/wineapp/*class*"/>
+      </fileset>
+    </jar>
+    <echo message="created client jar  file ${assemble.dir}/winestoreclient.jar"
+          level="verbose"></echo>
+  </target>
+  <!-- Drop and create database objects for the context project -->
+  <target name="DropAndCreateTables" depends="init">
+    <sql rdbms="oracle" driver="oracle.jdbc.OracleDriver"
+         userid="${jdbc.username}" password="${jdbc.password}"
+         url="${jdbc.url}"
+         classpath="${glassfish_home}/lib/ojdbc14.jar"
+         onerror="continue">
+      <transaction src="./PersistenceUnit/sqlscripts/WineStoreSchema.sql"></transaction>
+      <transaction src="./PersistenceUnit/sqlscripts/PopulateIdGenTable.sql"></transaction>
+      <transaction src="./PersistenceUnit/sqlscripts/PopulateWines.sql"></transaction>
+      <transaction src="./PersistenceUnit/sqlscripts/PopulateWineItems.sql"></transaction>
+      <transaction src="./PersistenceUnit/sqlscripts/PopulateInvetoryitems.sql"></transaction>
+      <transaction src="./PersistenceUnit/sqlscripts/PopulateDemoCustomer.sql"></transaction>
+    </sql>
+  </target>
+  <target name="Run-Client" depends="init,Assemble-Client">
+    <echo message="Executing client class using ${glassfish_home}/bin/${APPCLIENT} "></echo>
+    <exec executable="${glassfish_home}/bin/${APPCLIENT}">
+      <arg line="-client ${assemble.dir}/winestoreclient.jar"/>
+    </exec>
+  </target>
+</project>
+

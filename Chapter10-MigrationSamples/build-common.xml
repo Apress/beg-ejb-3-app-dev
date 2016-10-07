@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Chapter10" default="all" basedir=".">
+  <property file="../Chapter01-GettingStarted/build.properties"/>
+  <property name="chapter.dir" value="."/>
+  
+  <import file="../Chapter01-GettingStarted/build.xml"/>
+
+  <target name="all" depends="init,DropAndCreateTables,CreateJDBCResources"/>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <!-- Drop and create database objects for the context project -->
+  <target name="DropAndCreateTables" depends="init">
+    <sql rdbms="oracle" driver="oracle.jdbc.OracleDriver"
+         userid="${jdbc.username}" password="${jdbc.password}"
+         url="${jdbc.url}"
+         classpath="${glassfish_home}/lib/ojdbc14.jar"
+         onerror="continue">
+      <transaction src="${chapter.dir}/EmpDept.sql"></transaction>
+    </sql>
+  </target>
+</project>

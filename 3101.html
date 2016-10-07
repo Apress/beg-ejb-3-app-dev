@@ -1,0 +1,123 @@
+<title>Errata -Beginning EJB 3 Application Development</title><h1>Errata -Beginning EJB 3 Application Development</h1>
+<h2>Chapter 1 - Introduction to EJB 3 Architecture</h2>
+<p> GlassFish application server is installed in <strong>c:\Software</strong> 
+  directory instead of <strong>c:\Software\GlassFish</strong> as mentioned in 
+  <strong>Page 16</strong></p>
+<h3>Password file creation</h3>
+<p>There is one missing step, which is creation of a password file for GlassFish 
+  application server. This password file is used in all commands that are executed 
+  using asadmin utility or from all the Ant tasks, that you use to run the samples 
+  in different chapters. After you installed GlassFish server and setup the environment 
+  variables, create a file with <strong>asadminpass</strong> in <strong>%GLASSFISH_HOME%</strong> 
+  directory. This file should have the following one line </p>
+<p>AS_ADMIN_PASSWORD=adminadmin<br>
+  <br>
+  If you changed the default password, for you GlassFish application server, then 
+  substitue that password with <strong>adminadmin</strong>.</p>
+<p>More information for GlassFish application server can be found at</p>
+<p>https://glassfish.dev.java.net/javaee5/docs/DocsIndex.html</p>
+<h3>Copying JDBC driver</h3>
+<p>The wine store application, which is the sample application in the book, has 
+  been developed with the Oracle database as the data tier. You will have to copy 
+  right version of the JDBC drivers for the Oracle database into the <strong>%GLASSFISH_HOME%/lib</strong> 
+  directory. We have copied the <strong>ojdbc14.jar</strong> file that works with 
+  Oracle 10g.</p>
+<h2>Chapter 2 - EJB 3 Session Beans</h2>
+<p>There is a typo on the second paragraph of page 37. PostConstruct was spelled 
+  as PostContruct.</p>
+<h2>Chapter 5 - EJB 3 Message-Driven Beans</h2>
+<p><strong>Page 171</strong> - In Creating the JMS and JavaMail Resources, there 
+  is a missing dash in front of restype in the command that is used to create 
+  <strong>StatusMessageTopicConnectionFactory</strong>. The correct command is</p>
+<p><font face="Courier New, Courier, mono">Z:\Chapter05-MDBSamples\MDBSamples&gt;%GLASSFISH_HOME%/bin/asadmin.bat 
+  create-jms-resource --host localhost --port 4848 --user admin &#8211;passwordfile 
+  %GLASSFISH_HOME%\asadminpass --restype javax.jms.TopicConnectionFactory StatusMessageTopicConnectionFactory</font></p>
+<p><strong>Page 173</strong> - There are missing dashes in the command that is 
+  used to create JavaMail resource. The correct command is</p>
+<p><font face="Courier New, Courier, mono">Z:\Chapter05-MDBSamples\MDBSamples&gt;%GLASSFISH_HOME%/bin/asadmin.bat 
+  create-javamail-resource --host localhost --port 4848 --user admin --passwordfile 
+  %GLASSFISH_HOME%\asadminpass --mailhost localhost --mailuser wineapp@localhost 
+  --fromaddress wineapp@localhost mail/wineappMail</font></p>
+<p><strong>Page 174</strong> - There are missing dashes in the command that is 
+  used to deploy the application. The correct command is</p>
+<p><font face="Courier New, Courier, mono">Z:\Chapter05-MDBSamples\MDBSamples&gt;%GLASSFISH_HOME%/bin/asadmin.bat 
+  deploy --host localhost --port 4848 --user admin --passwordfile %GLASSFISH_HOME%\asadminpass 
+  --upload=true --target server z:\Chapter05-MDBSamples\MDBSamples\archive\MDBSamples.jar</font></p>
+<p><strong>Page 175</strong> - A new Ant task <strong>Run-Client</strong> has 
+  been added to run the client program. In the command shell you can run the Ant 
+  task.</p>
+<p><font face="Courier New, Courier, mono">Z:\Chapter05-MDBSamples\MDBSamples\&gt;%ANT_HOME%/bin/ant 
+  Run-Client</font></p>
+<h2>Chapter 6 - EJB 3 and Web Services</h2>
+<p>The correct command for generating Web Services Proxy Classes is as follows:</p>
+<p><font face="Courier New, Courier, mono">Z:\chapter06-WebServiceSamples\WebServiceSamples&gt;%GLASSFISH_HOME%/bin/wsimport.bat 
+  -keep -d ./classes/client http://localhost:8080/CreditService/CreditCheckEndp 
+  ointBean?WSDL</font></p>
+<h2>Chapter 7 - Integrating Session Beans, Entities, Message-Driven Beans, and 
+  Web Services</h2>
+<p><strong>Page 245 - Creating the Database Schema</strong></p>
+<p>Login to SQLPlus as <strong>system</strong> user.</p>
+<p>Execute<strong> runsql.sql </strong> using SQLPlus.</p>
+<p><strong>runsql.sql</strong> and other dependent sql scripts are available in 
+  <strong>z:\chapter07-IntegratedSamples\IntegratedSamples\PersistenceUnit\sqlscripts</strong> 
+  directory. </p>
+<p><strong>Page 250</strong> - There are missing dashes in the command that is 
+  used to deploy the application. The correct command is</p>
+<p><font face="Courier New, Courier, mono">Z:\chapter07-IntegratedSamples\IntegratedSamples&gt;%GLASSFISH_HOME%/bin/ 
+  asadmin.bat deploy --host localhost --port 4848 --user admin --passwordfile 
+  %GLASSFISH_HOME%\asadminpass --upload=true --target server z:\chapter07-IntegratedSamples\IntegratedSamples\archive\winestore.ear</font></p>
+<p><strong>Page 253</strong> - There is a missing forward slash in the command 
+  that is used to run the client program. The correct command is</p>
+<p><font face="Courier New, Courier, mono">Z:\chapter07-IntegratedSamples\IntegratedSamples\GLassFishUnitTests&gt;%JAVA_HOME%/bin/javac 
+  -classpath %GLASSFISH_HOME%\lib\javaee.jar;..\archive\winestoreEJB.jar;..\archive\lib\punit.jar 
+  -d ../classes src\com\apress\ejb3\chapter07\client\*.java</font></p>
+<h2><br>
+  <br>
+  Chapter 9 - EJB 3 Performance and Testing</h2>
+<p>This chapter compares <strong>JOINED</strong> and <strong>SINGLE_TABLE</strong> 
+  inheritance strategies in Java Persistence API (JPA). <strong>JOINED</strong> 
+  inheritance strategy uses the wineapp schema that is used for other chapter 
+  samples. We have a different schema to test <strong>SINGLE_TABLE</strong> strategy. 
+  You can install the <strong>SINGLE_TABLE</strong> wineapp schema by </p>
+<p>Login to SQLPlus as <strong>system</strong> user.</p>
+<p>Execute<strong> runsql.sql </strong> using SQLPlus.</p>
+<p><strong>runsql.sql</strong> and other dependent sql scripts are available in 
+  <strong>z:\chapter09-PerformanceSamples\PersistenceUnit-ST\sqlscripts</strong> 
+  directory. </p>
+<h3>Deploying JOINED inheritance strategy winestore application</h3>
+<p>To deploy the winestore application which is using <strong>JOINED</strong> 
+  inheritance strategy, execute the following Ant task.</p>
+<p>Open a command shell.</p>
+<p>Change directory to <strong>chapter09-PeformanceSamples</strong> which is in 
+  Chapter 9 directory in the downloaded source code.</p>
+<p>Execute</p>
+<p><font face="Courier New, Courier, mono">%ANT_HOME%/bin/ant DeployWineStoreApplication</font></p>
+<p>After sucessful deployment, you can run the application using the following 
+  URL.</p>
+<p><font face="Courier New, Courier, mono">http://localhost:8080/wineapp/faces/winestore.jsp</font></p>
+<p>Substitute localhost and 8080, with the host that is running GlassFish server 
+  and the port that is configured.</p>
+<h3>Running SINGLE_TABLE inheritance strategy winestore application</h3>
+<p>To deploy the winestore application which is using <strong>SINGLE_TABLE</strong> 
+  inheritance strategy, execute the following Ant task.</p>
+<p>Open a command shell.</p>
+<p>Change directory to chapter09-Sample which is Chapter 9 directory in the downloaded 
+  source code.</p>
+<p>Execute</p>
+<p><font face="Courier New, Courier, mono">%ANT_HOME%/bin/ant DeployWineStoreApplication-ST</font></p>
+<p>The client application is a Java class that is executed from the Grinder. After 
+  setting up Grinder environment you can use the python script <strong>JEE.py</strong> 
+  in chapter09-PerformanceSamples/J2SECompareClientWithFacadeAccess directory. 
+</p>
+<p>&nbsp;</p>
+<h2>Samples</h2>
+<p>The samples zip file contains the completed samples for each chapter. Each 
+  chapter sample comes with a set of Ant tasks, that will execute the sample code 
+  along with required pre-requiste steps. A master readme.txt is provided with 
+  the samples zip file which contains details on how to setup and run. Each chapter 
+  also comes with the readme files that details the tasks done by the sample.</p>
+<p>&nbsp; </p>
+<p><strong></strong></p>
+<p>&nbsp;</p>
+<p><br>
+</p>

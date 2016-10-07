@@ -1,0 +1,102 @@
+<?xml version = '1.0' encoding = 'windows-1252'?>
+<orion-ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://xmlns.oracle.com/oracleas/schema/orion-ejb-jar-10_0.xsd" schema-major-version="10" schema-minor-version="0">
+  <enterprise-beans>
+    <persistence-manager name="orion">
+      <pm-properties>
+        <default-mapping db-table-gen="UseExisting"/>
+      </pm-properties>
+    </persistence-manager>
+    <session-deployment name="HRManager"/>
+    <session-deployment name="Hello"/>
+    <entity-deployment name="Department" data-source="jdbc/wineappDS"
+                       table="DEPT">
+      <primkey-mapping>
+        <cmp-field-mapping name="deptno" persistence-name="DEPTNO"
+                           persistence-type="NUMBER(2)"/>
+      </primkey-mapping>
+      <cmp-field-mapping name="deptno" persistence-name="DEPTNO"
+                         persistence-type="NUMBER(2)"/>
+      <cmp-field-mapping name="dname" persistence-name="DNAME"
+                         persistence-type="VARCHAR2(14)"/>
+      <cmp-field-mapping name="loc" persistence-name="LOC"
+                         persistence-type="VARCHAR2(13)"/>
+      <cmp-field-mapping name="employees">
+        <collection-mapping table="EMP">
+          <primkey-mapping>
+            <cmp-field-mapping>
+              <entity-ref home="Department">
+                <cmp-field-mapping name="department_deptno_deptno"
+                                   persistence-name="DEPTNO"
+                                   persistence-type="NUMBER(2)"/>
+              </entity-ref>
+            </cmp-field-mapping>
+          </primkey-mapping>
+          <value-mapping type="com.apress.ejb3.ch10.ejb21.EmployeeLocal">
+            <cmp-field-mapping>
+              <entity-ref home="Employee">
+                <cmp-field-mapping name="employee_deptno_empno"
+                                   persistence-name="EMPNO"
+                                   persistence-type="NUMBER(4)"/>
+              </entity-ref>
+            </cmp-field-mapping>
+          </value-mapping>
+        </collection-mapping>
+      </cmp-field-mapping>
+    </entity-deployment>
+    <entity-deployment name="Employee" data-source="jdbc/wineappDS"
+                       table="EMP">
+      <primkey-mapping>
+        <cmp-field-mapping name="empno" persistence-name="EMPNO"
+                           persistence-type="NUMBER(4)"/>
+      </primkey-mapping>
+      <cmp-field-mapping name="empno" persistence-name="EMPNO"
+                         persistence-type="NUMBER(4)"/>
+      <cmp-field-mapping name="ename" persistence-name="ENAME"
+                         persistence-type="VARCHAR2(10)"/>
+      <cmp-field-mapping name="job" persistence-name="JOB"
+                         persistence-type="VARCHAR2(9)"/>
+      <cmp-field-mapping name="hiredate" persistence-name="HIREDATE"
+                         persistence-type="DATE"/>
+      <cmp-field-mapping name="sal" persistence-name="SAL"
+                         persistence-type="NUMBER(7,2)"/>
+      <cmp-field-mapping name="comm" persistence-name="COMM"
+                         persistence-type="NUMBER(7,2)"/>
+      <cmp-field-mapping name="deptno" persistence-name="DEPTNO"
+                         persistence-type="NUMBER(2)"/>
+      <cmp-field-mapping name="department" persistence-name="DEPTNO">
+        <entity-ref home="Department">
+          <cmp-field-mapping persistence-name="DEPTNO"
+                             persistence-type="NUMBER(2)"/>
+        </entity-ref>
+      </cmp-field-mapping>
+      <cmp-field-mapping name="managedEmployees">
+        <collection-mapping table="EMP">
+          <primkey-mapping>
+            <cmp-field-mapping>
+              <entity-ref home="Employee">
+                <cmp-field-mapping name="employee_mgr_empno"
+                                   persistence-name="MGR"
+                                   persistence-type="NUMBER(4)"/>
+              </entity-ref>
+            </cmp-field-mapping>
+          </primkey-mapping>
+          <value-mapping type="com.apress.ejb3.ch10.ejb21.EmployeeLocal">
+            <cmp-field-mapping>
+              <entity-ref home="Employee">
+                <cmp-field-mapping name="employee_mgr_1_empno"
+                                   persistence-name="EMPNO"
+                                   persistence-type="NUMBER(4)"/>
+              </entity-ref>
+            </cmp-field-mapping>
+          </value-mapping>
+        </collection-mapping>
+      </cmp-field-mapping>
+      <cmp-field-mapping name="manager" persistence-name="MGR">
+        <entity-ref home="Employee">
+          <cmp-field-mapping persistence-name="MGR"
+                             persistence-type="NUMBER(4)"/>
+        </entity-ref>
+      </cmp-field-mapping>
+    </entity-deployment>
+  </enterprise-beans>
+</orion-ejb-jar>

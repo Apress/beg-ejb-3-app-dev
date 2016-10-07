@@ -1,0 +1,38 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<GenerateDescriptor class="oracle.jdeveloper.offlinedb.model.GenerateDescriptor">
+   <SQLFileURL path="MappedSuperclass.sql"/>
+   <cascadeDelete>true</cascadeDelete>
+   <connectionName/>
+   <generateSQLPlus>false</generateSQLPlus>
+   <generateSchemaNames>false</generateSchemaNames>
+   <generateScripts>true</generateScripts>
+   <generateSpoolCommands>false</generateSpoolCommands>
+   <generateToDatabase>false</generateToDatabase>
+   <manualReconcile>false</manualReconcile>
+   <objectIDs>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>6f4a4536-010b-1000-800c-822364c432ac</ID>
+         <parent/>
+         <type>TABLE</type>
+      </Item>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>6f4a4536-010b-1000-8015-822364c432ac</ID>
+         <parent/>
+         <type>TABLE</type>
+      </Item>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>6f4a4536-010b-1000-8025-822364c432ac</ID>
+         <parent/>
+         <type>SEQUENCE</type>
+      </Item>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>6f4a4536-010b-1000-8026-822364c432ac</ID>
+         <parent/>
+         <type>SEQUENCE</type>
+      </Item>
+   </objectIDs>
+   <properties/>
+   <reconcile>false</reconcile>
+   <replace>true</replace>
+   <schemaName/>
+</GenerateDescriptor>

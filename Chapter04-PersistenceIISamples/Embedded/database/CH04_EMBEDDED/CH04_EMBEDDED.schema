@@ -1,0 +1,10 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SCHEMA class="oracle.javatools.db.Schema" xmlns="http://xmlns.oracle.com/jdeveloper/10130/offlinedb">
+   <ID class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+      <ID>6f9e69fb-010b-1000-8021-822364c4557c</ID>
+      <parent/>
+      <type>SCHEMA</type>
+   </ID>
+   <name>CH04_EMBEDDED</name>
+   <properties/>
+</SCHEMA>

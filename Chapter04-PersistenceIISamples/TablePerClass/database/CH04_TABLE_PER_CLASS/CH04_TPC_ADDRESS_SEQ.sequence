@@ -1,0 +1,26 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SEQUENCE class="oracle.javatools.db.Sequence" xmlns="http://xmlns.oracle.com/jdeveloper/10130/offlinedb">
+   <ID class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+      <ID>6dcf5e3f-010b-1000-800d-822364c4360a</ID>
+      <parent/>
+      <type>SEQUENCE</type>
+   </ID>
+   <cacheSize>20</cacheSize>
+   <cycleFlag>false</cycleFlag>
+   <incrementBy>50</incrementBy>
+   <maxValue/>
+   <minValue>1</minValue>
+   <name>CH04_TPC_ADDRESS_SEQ</name>
+   <orderFlag>false</orderFlag>
+   <properties/>
+   <schema>
+      <ID class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>6dcb79e9-010b-1000-8002-822364c4360a</ID>
+         <parent/>
+         <type>SCHEMA</type>
+      </ID>
+      <name>CH04_TABLE_PER_CLASS</name>
+      <properties/>
+   </schema>
+   <startWith>100</startWith>
+</SEQUENCE>

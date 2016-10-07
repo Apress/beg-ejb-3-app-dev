@@ -1,0 +1,28 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<GenerateDescriptor class="oracle.jdeveloper.offlinedb.model.GenerateDescriptor">
+   <SQLFileURL path="Embedded.sql"/>
+   <cascadeDelete>true</cascadeDelete>
+   <connectionName/>
+   <generateSQLPlus>false</generateSQLPlus>
+   <generateSchemaNames>false</generateSchemaNames>
+   <generateScripts>true</generateScripts>
+   <generateSpoolCommands>false</generateSpoolCommands>
+   <generateToDatabase>false</generateToDatabase>
+   <manualReconcile>false</manualReconcile>
+   <objectIDs>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>6f97cb57-010b-1000-8003-822364c4557c</ID>
+         <parent/>
+         <type>TABLE</type>
+      </Item>
+      <Item class="oracle.jdeveloper.offlinedb.OfflineDBObjectID">
+         <ID>6f97cb57-010b-1000-8013-822364c4557c</ID>
+         <parent/>
+         <type>SEQUENCE</type>
+      </Item>
+   </objectIDs>
+   <properties/>
+   <reconcile>false</reconcile>
+   <replace>true</replace>
+   <schemaName/>
+</GenerateDescriptor>

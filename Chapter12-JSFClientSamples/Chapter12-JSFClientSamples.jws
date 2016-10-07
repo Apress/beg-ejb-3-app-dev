@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<jws:workspace xmlns:jws="http://xmlns.oracle.com/ide/project">
+   <list n="listOfChildren">
+      <hash>
+         <value n="nodeClass" v="oracle.ide.model.Project"/>
+         <url n="URL" path="WineStoreJSFClient/WineStoreJSFClient.jpr"/>
+      </hash>
+      <hash>
+         <value n="nodeClass" v="oracle.ide.model.Project"/>
+         <url n="URL" path="WineStoreAppAssembly/WineStoreAppAssembly.jpr"/>
+      </hash>
+   </list>
+</jws:workspace>

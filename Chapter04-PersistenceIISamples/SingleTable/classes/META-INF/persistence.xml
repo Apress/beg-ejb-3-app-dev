@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+  <persistence-unit name="SingleTable-JSE">
+    <class>com.apress.ejb3.ch04.singletable.Address</class>
+    <class>com.apress.ejb3.ch04.singletable.Person</class>
+    <class>com.apress.ejb3.ch04.singletable.Employee</class>
+    <class>com.apress.ejb3.ch04.singletable.FullTimeEmployee</class>
+    <class>com.apress.ejb3.ch04.singletable.PartTimeEmployee</class>
+    <properties>
+      <property name="toplink.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+      <property name="toplink.jdbc.url"
+                value="jdbc:oracle:thin:@adt-scaler1.us.oracle.com:1521:adt1010"/>
+      <property name="toplink.jdbc.user" value="jwetherb"/>
+      <property name="toplink.jdbc.password" value="jwetherb"/>
+      <property name="toplink.platform.class.name"
+                value="oracle.toplink.essentials.platform.database.oracle.OraclePlatform"/>
+      <property name="toplink.logging.level" value="FINER"/>
+    </properties>
+  </persistence-unit>
+</persistence>

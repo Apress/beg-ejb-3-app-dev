@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<?Oracle-JDeveloper Artifact = '1.1'?>
+<artifact xmlns="http://xmlns.oracle.com/jdeveloper/modeler/artifact" name="ejb3" type="UMLPackage" cid="bb5daa81-010b-1000-8003-822364c475a5::com.apress.ejb3::UMLPackage">
+   <property xmlns="">
+      <cid name="NAMESPACE_REFERENCE" key="bb5daa81-010b-1000-8002-822364c475a5::com.apress::UMLPackage"/>
+      <null name="COMMENT"/>
+      <null name="IMAGE"/>
+   </property>
+   <backreference xmlns=""/>
+   <children xmlns=""/>
+</artifact>

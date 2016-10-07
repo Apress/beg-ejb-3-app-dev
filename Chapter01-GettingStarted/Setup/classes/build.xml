@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Chapter01" default="all" basedir=".">
+  <property file="build.properties"/>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <target name="all" depends="init,DropAndCreateDatabaseUser,CreateJDBCResources"/>
+
+  <!-- [Drop and re-]create the wineapp user by the samples -->
+  <target name="DropAndCreateDatabaseUser" depends="init">
+    <sql rdbms="oracle" driver="oracle.jdbc.OracleDriver"
+         userid="${jdbc.system.username}" password="${jdbc.system.password}"
+         url="${jdbc.url}"
+         classpath="${glassfish_home}/lib/ojdbc14.jar"
+         onerror="continue">
+      drop user ${jdbc.username} cascade;
+      grant connect,resource to ${jdbc.username} identified by ${jdbc.password};
+    </sql>
+  </target>
+
+  <target name="Drop-JDBCResources" depends="init" unless="ee">
+    <echo message="Drop - JDBCResources " level="verbose"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jdbc-resource"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="jdbc/wineappDS"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" delete-jdbc-connection-pool"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="winepool"/>
+    </exec>
+  </target>
+
+  <target name="CreateJDBCResources" depends="Drop-JDBCResources">
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jdbc-connection-pool --host ${admin.host} --port ${admin.port} --user admin --passwordfile %GLASSFISH_HOME%\asadminpass --datasourceclassname oracle.jdbc.pool.OracleDataSource --restype javax.sql.DataSource --property DataSourceName=OracleDataSource:NetworkProtocol=tcp:DatabaseName=${jdbc.dbname}:Password=${jdbc.password}:URL=jdbc\:oracle\:thin\:@${jdbc.hostname}\:${jdbc.port}\:${jdbc.sid}:User=${jdbc.username}:ServiceName=${jdbc.servicename}:PortNumber=${jdbc.port}:ServerName=localhost winepool"/>
+    </exec>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="true"
+          vmlauncher="false">
+      <arg line="create-jdbc-resource --host ${admin.host} --port ${admin.port} --user admin --passwordfile %GLASSFISH_HOME%\asadminpass --connectionpoolid winepool jdbc/wineappDS"/>
+    </exec>
+  </target>
+  
+</project>

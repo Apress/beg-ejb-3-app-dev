@@ -1,0 +1,11 @@
+insert into wine_item values (1,'InventoryItem',1, 1, 1000000);
+insert into wine_item values (2,'InventoryItem',1, 2, 1000000);
+insert into wine_item values (3,'InventoryItem',1, 3, 1000000);
+insert into wine_item values (4,'InventoryItem',1, 4, 1000000);
+insert into wine_item values (5,'InventoryItem',1, 5, 1000000);
+insert into wine_item values (6,'InventoryItem',1, 6, 1000000);
+insert into wine_item values (7,'InventoryItem',1, 7, 1000000);
+insert into wine_item values (8,'InventoryItem',1, 8, 1000000);
+insert into wine_item values (9,'InventoryItem',1, 9, 1000000);
+insert into wine_item values (10,'InventoryItem',1, 10, 1000000);
+commit;

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+  <persistence-unit name="wineStoreUnit">
+    <provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider>
+    <jta-data-source>jdbc/wineappDS</jta-data-source>
+    <properties>
+      <property name="toplink.logging.level" value="FINER"/>
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Chapter02" default="all" basedir=".">
+  <property file="../Chapter01-GettingStarted/build.properties"/>
+  <property file="build.properties"/>
+  <path id="classpath">
+    <dirset dir="${output.dir}/clientproxies"/>
+    <pathelement location="${output.dir}/clientproxies"/>
+    <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+    <pathelement location="${output.dir}"/>
+  </path>
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${output.dir}/client"/>
+  </target>
+  <target name="all" description="Build the project"
+          depends="clean, Compile-WSSamples,Assemble-CreditService,Deploy-CreditService,Assemble-Client,runclient"/>
+  <target name="clean" description="Clean the project">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${assemble.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <target name="Compile-WSSamples" description="Compile Web Services samples"
+          depends="init">
+    <echo message="Classpath  = ${glassfish_home}/lib/javaee.jar"> </echo>
+    <javac srcdir="./src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar" debug="${javac.debug}"
+           nowarn="${javac.nowarn}" deprecation="${javac.deprecation}"
+           encoding="Cp1252" source="1.5" target="1.5"
+           includes="com/apress/ejb3/chapter06/services/*.java"
+           excludes="com/apress/ejb3/chapter06/client/*.java"></javac>
+  </target>
+  <target name="Assemble-CreditService" depends="init,Compile-WSSamples">
+    <mkdir dir="${assemble.dir}"/>
+    <jar jarfile="${assemble.dir}/${creditserviceappname}.jar" update="true">
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="**/*class*"/>
+      </fileset>
+    </jar>
+    <echo message="created ejb jar  file ${assemble.dir}/${creditserviceappname}.jar"
+          level="verbose"></echo>
+  </target>
+  <target name="Undeploy-CreditService" depends="init" unless="ee">
+    <echo message="Un-Deploying Credit Service " level="verbose"></echo>
+    <echo message="asadmin.bat undeploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} CreditService"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" undeploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="creditservice"/>
+    </exec>
+  </target>
+  <target name="Deploy-CreditService"
+          depends="init,Compile-WSSamples,Assemble-CreditService, Undeploy-CreditService"
+          unless="ee">
+    <echo message="Deploying ${assemble.dir}/${creditserviceappname}.jar from ${assemble.dir}."
+          level="verbose"></echo>
+    <echo message="asadmin.bat deploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} --upload=true --target ${appserver.instance} ${assemble.dir}/${creditserviceappname}.jar"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" deploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--upload=true"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${assemble.dir}/${creditserviceappname}.jar"/>
+    </exec>
+  </target>
+  <target name="GenWSProxy" depends="init">
+    <echo message="WSDL location  = http://${admin.host}:${http.port}/CreditService/CreditCheckEndpointBean?WSDL}"></echo>
+    <echo message="${glassfish_home}/bin/${WSIMPORT} -keep -d ${output.dir}/client http://${admin.host}:${http.port}/CreditService/CreditCheckEndpointBean?WSDL"></echo>
+    <exec executable="${glassfish_home}/bin/${WSIMPORT}" failonerror="true">
+      <arg line="-keep -d ${output.dir}/client http://${admin.host}:${http.port}/CreditService/CreditCheckEndpointBean?WSDL"/>
+    </exec>
+  </target>
+  <target name="CompileWSClient" depends="init,GenWSProxy">
+    <javac srcdir="src" destdir="${output.dir}"
+           classpath="${glassfish_home}/lib/javaee.jar;${glassfish_home}/lib/appserv-ws.jar;${output.dir}/client"
+           includes="com/apress/ejb3/chapter06/client/**"/>
+  </target>
+  <target name="Assemble-Client" depends="init, CompileWSClient">
+    <mkdir dir="${assemble.dir}"/>
+    <jar jarfile="${assemble.dir}/creditserviceclient.jar" update="true">
+      <manifest>
+        <attribute name="Main-Class"
+                   value="com.apress.ejb3.chapter06.client.CreditServiceClient"/>
+      </manifest>
+      <fileset dir="${output.dir}/" casesensitive="yes">
+        <include name="com/apress/ejb3/chapter06/client/*class*"/>
+      </fileset>
+      <fileset dir="${output.dir}/client" casesensitive="yes">
+        <include name="**/*class*"/>
+      </fileset>
+    </jar>
+    <echo message="created ejb jar  file ${assemble.dir}/${creditserviceappname}.jar"
+          level="verbose"></echo>
+  </target>
+  <target name="runclient" depends="init">
+    <echo message="Executing client class using ${glassfish_home}/bin/${APPCLIENT} "></echo>
+    <exec executable="${glassfish_home}/bin/${APPCLIENT}">
+      <arg line="-client ${assemble.dir}/creditserviceclient.jar"/>
+    </exec>
+  </target>
+</project>
+
+

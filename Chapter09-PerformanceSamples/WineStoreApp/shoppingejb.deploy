@@ -1,0 +1,50 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ejb-deployment nselem="ejb-deployment" class="oracle.jdeveloper.deploy.ejb.EjbProfile" xmlns="http://xmlns.oracle.com/jdeveloper/101303/deploy/j2ee-ejb-jar">
+   <archiveOptions>
+      <additionalManifests/>
+      <compressed>false</compressed>
+      <hasManifest>true</hasManifest>
+      <mainClass/>
+   </archiveOptions>
+   <defaultConnection/>
+   <deployClientMaxHeapSize/>
+   <earURL path="deploy/shoppingejb.ear"/>
+   <enterpriseAppName>shoppingejb</enterpriseAppName>
+   <fileGroups>
+      <groups>
+         <Item class="oracle.jdeveloper.deploy.common.PackagingFileGroup" internalName="project-output">
+            <contributors>
+               <Item type="2"/>
+               <Item type="7"/>
+            </contributors>
+            <displayName>Project Output</displayName>
+            <filters>
+               <rules>
+                  <Item type="1" pattern="com/apress/ejb3/wineapp/"/>
+                  <Item type="1" pattern="com/apress/ejb3/test/"/>
+                  <Item type="1" pattern="com/apress/ejb3/ch07/"/>
+                  <Item type="1" pattern="META-INF/application-client.xml"/>
+                  <Item type="1" pattern="META-INF/persistence.xml"/>
+                  <Item type="1" pattern="winestoreapp/"/>
+                  <Item type="1" pattern="**/CVS/"/>
+                  <Item type="1" pattern="**.cdi"/>
+                  <Item type="1" pattern="**.contrib"/>
+                  <Item type="1" pattern="**.keep"/>
+                  <Item type="1" pattern="**.rvi"/>
+                  <Item type="1" pattern=".jsps/"/>
+                  <Item type="1" pattern=".tags/"/>
+                  <Item type="1" pattern=".dtags/"/>
+                  <Item type="1" pattern="**/*.jht"/>
+                  <Item type="1" pattern="**/*.jjt"/>
+                  <Item type="1" pattern="**/*.jxt"/>
+                  <Item type="0" pattern="**"/>
+               </rules>
+            </filters>
+            <targetWithinJar/>
+         </Item>
+      </groups>
+   </fileGroups>
+   <jarURL path="deploy/shoppingejb.jar"/>
+   <profileDeps/>
+   <properties/>
+</ejb-deployment>

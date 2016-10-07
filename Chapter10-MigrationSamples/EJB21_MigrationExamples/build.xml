@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="EJB21_MigrationExamples" default="all" basedir=".">
+  <property file="../../Chapter01-GettingStarted/build.properties"/>
+  <property name="chapter.dir" value=".."/>
+  <import file="../build-common.xml"/>
+
+  <target name="all" depends="Chapter10.all,init,compile"/>
+  
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${assemble.dir}"/>
+  </target>
+  
+  <target name="clean" description="Clean the project" depends="init">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${assemble.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  
+  <path id="compile.path">
+    <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+  </path>
+
+  <target name="compile" description="Compile Java source files" depends="init,clean">
+    <javac destdir="${output.dir}"
+           classpathref="compile.path"
+           debug="${javac.debug}" nowarn="${javac.nowarn}"
+           deprecation="${javac.deprecation}" encoding="Cp1252" source="1.5"
+           target="1.5">
+      <src path="src"/>
+    </javac>
+  </target>
+
+  <target name="copy" description="Copy files to output directory"
+          depends="compile">
+    <patternset id="copy.patterns">
+      <include name="META-INF/*"/>
+    </patternset>
+    <copy todir="${output.dir}">
+      <fileset dir="src">
+        <patternset refid="copy.patterns"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="Assemble-EJB21Examples" depends="init">
+    <mkdir dir="${assemble.dir}"/>
+    <jar destfile="${assemble.dir}/${ant.project.name}.jar" update="true">
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/**/*.class"/>
+        <include name="META-INF/*"/>
+        <exclude name="com/apress/ejb3/**/client/*"/>
+      </fileset>
+    </jar>
+    <echo>Created persistence unit archive ${assemble.dir}/${ant.project.name}.jar</echo>
+  </target>
+  
+  <target name="Assemble-EJB21ExamplesClient" depends="init">
+    <mkdir dir="${assemble.dir}"/>
+    <jar destfile="${assemble.dir}/${ant.project.name}Client.jar" update="true">
+      <fileset dir="${output.dir}" casesensitive="yes">
+        <include name="com/apress/ejb3/**/*.class"/>
+        <exclude name="com/apress/ejb3/**/client/*"/>
+        <exclude name="com/apress/ejb3/**/*Bean*.class"/>
+      </fileset>
+    </jar>
+    <echo>Created persistence unit archive ${assemble.dir}/${ant.project.name}Client.jar</echo>
+  </target>
+  
+  <target name="Undeploy-EJB21Examples" depends="init" unless="ee">
+    <echo message="Un-deploying EJB module ${ant.project.name}"
+          level="verbose"></echo>
+    <echo message="asadmin.bat undeploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} ${ant.project.name}"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" undeploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${ant.project.name}"/>
+    </exec>
+  </target>
+  
+  <target name="Deploy-EJB21Examples" depends="init,Undeploy-EJB21Examples"
+          unless="ee">
+    <echo message="Deploying EJB module ${assemble.dir}/${ant.project.name}.jar containing the sample persistence unit"
+          level="verbose"></echo>
+    <echo message="asadmin.bat deploy --user ${admin.user} --password ${admin.password} --host ${admin.host} --port ${admin.port} --upload=true --target ${appserver.instance} ${assemble.dir}/${ant.project.name}.jar"></echo>
+    <exec executable="${glassfish_home}/bin/${ASADMIN}" failonerror="false">
+      <arg line=" deploy"/>
+      <arg line="--user ${admin.user}"/>
+      <arg line="--passwordfile ${glassfish_home}/asadminpass"/>
+      <arg line="--host ${admin.host}"/>
+      <arg line="--port ${admin.port}"/>
+      <arg line="--upload=true"/>
+      <arg line="--target ${appserver.instance}"/>
+      <arg line="${assemble.dir}/${ant.project.name}.jar"/>
+    </exec>
+  </target>
+
+  <path id="client.path">
+    <pathelement location="${output.dir}"/>
+    <pathelement location="${assemble.dir}/${ant.project.name}Client.jar"/>
+    <pathelement location="${glassfish_home}/lib/javaee.jar"/>
+    <pathelement location="${glassfish_home}/lib/appserv-rt.jar"/>
+    <pathelement location="${java.home}/lib/jsse.jar"/>
+  </path>
+  
+  <target name="Run-HRManagerClient" depends="init">
+    <echo message="Executing Java EE client to instantiate the HRManager session bean"></echo>
+    <java classname="com.apress.ejb3.ch10.ejb21.client.HRManagerClient"
+          classpathref="client.path"></java>
+  </target>
+</project>

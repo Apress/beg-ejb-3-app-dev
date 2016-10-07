@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ear-deployment nselem="ear-deployment" class="oracle.jdeveloper.deploy.ear.EarProfile" xmlns="http://xmlns.oracle.com/jdeveloper/101303/deploy/j2ee-ear">
+   <archiveOptions>
+      <additionalManifests/>
+      <compressed>false</compressed>
+      <hasManifest>false</hasManifest>
+      <mainClass/>
+   </archiveOptions>
+   <defaultConnection>local</defaultConnection>
+   <deployClientMaxHeapSize/>
+   <description/>
+   <earURL path="deploy/InsertTest.ear"/>
+   <enterpriseAppName>InsertTest</enterpriseAppName>
+   <fileGroups>
+      <groups>
+         <Item class="oracle.jdeveloper.deploy.common.PackagingFileGroup">
+            <contributors>
+               <Item type="1">
+                  <location path="../../Samples/PersistenceUnit/deploy/"/>
+               </Item>
+            </contributors>
+            <displayName>PersistenceUnit</displayName>
+            <filters>
+               <rules>
+                  <Item type="0" pattern="PUNIT.jar"/>
+                  <Item type="1" pattern="**"/>
+                  <Item type="1" pattern="com/"/>
+                  <Item type="1" pattern="winestoreapp/"/>
+                  <Item type="1" pattern="**/CVS/"/>
+                  <Item type="1" pattern="**.cdi"/>
+                  <Item type="1" pattern="**.contrib"/>
+                  <Item type="1" pattern="**.keep"/>
+                  <Item type="1" pattern="**.rvi"/>
+                  <Item type="1" pattern=".jsps/"/>
+                  <Item type="1" pattern=".tags/"/>
+                  <Item type="1" pattern=".dtags/"/>
+                  <Item type="1" pattern="**/*.jht"/>
+                  <Item type="1" pattern="**/*.jjt"/>
+                  <Item type="1" pattern="**/*.jxt"/>
+                  <Item type="0" pattern="**"/>
+               </rules>
+            </filters>
+            <targetWithinJar>lib</targetWithinJar>
+         </Item>
+      </groups>
+   </fileGroups>
+   <profileDeps>
+      <Item>
+         <profileURL path="oc4jtestshoppingandentities.deploy"/>
+         <projectURL path="WineStoreApp.jpr"/>
+      </Item>
+   </profileDeps>
+   <properties/>
+</ear-deployment>
